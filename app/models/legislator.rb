@@ -8,7 +8,7 @@ class Legislator < ActiveRecord::Base
   def self.by_state(state)
     senators_array = []
     rep_array = []
-    searched_state = self.where('state = ?', state.upcase )
+    searched_state = self.where('state = ?', state.upcase ).order('lastname')
     puts "Senators:"
     searched_state.map do |x|
       if x.title == 'Sen'
@@ -18,15 +18,13 @@ class Legislator < ActiveRecord::Base
       end
     end
 
-    sorted_senators = senators_array.sort {|a, b| a[2] <=> b[2]}.uniq 
-    sorted_senators.each {|x| puts "#{x[0]} #{x[1]} #{x[2]} (#{x[3]})"}
+    senators_array.each {|x| puts "#{x[0]} #{x[1]} #{x[2]} (#{x[3]})"}
     puts
     puts "Representatives:"
-    sorted_rep = rep_array.sort {|a, b| a[2] <=> b[2]}.uniq 
-    sorted_rep.each {|x| puts "#{x[0]} #{x[1]} #{x[2]} (#{x[3]})"}
+    rep_array.each {|x| puts "#{x[0]} #{x[1]} #{x[2]} (#{x[3]})"}
   end
 
-  def politician_count_per_state(state)
+  def self.politicians_per_state
     # Print out the list of states along with how many active senators 
     # and representatives are in each, in descending order (i.e., print out 
     #   states with the most congresspeople first).
@@ -35,6 +33,9 @@ class Legislator < ActiveRecord::Base
     # NY: 2 Senators, 29 Representative(s)
     # (... etc., etc., ...)
     # WY: 2 Senators, 1 Representative(s)
+    #self.all.map do |x|
+
+    
   end
 end
 
