@@ -2,7 +2,7 @@ require_relative '../../db/config'
 require_relative '../main'
 
 class Legislator < ActiveRecord::Base
-  extend Shiznitt
+  #extend Shiznitt
 
   def initialize
       
@@ -22,4 +22,4 @@ class Legislator < ActiveRecord::Base
 
 end
 
-p Legislator.all
+

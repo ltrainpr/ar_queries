@@ -14,7 +14,7 @@ class SunlightLegislatorsImporter
     csv.each do |row|
       politician = Legislator.new
       row.each do |field, value|
-         politician[field] = value
+         politician.firstname = value
         # p field.class
 
         # p value.class
@@ -30,7 +30,7 @@ class SunlightLegislatorsImporter
 end
 
 # p %x[pwd]
-SunlightLegislatorsImporter.import('db/data/legislators.csv')
+
 
 
 # IF YOU WANT TO HAVE THIS FILE RUN ON ITS OWN AND NOT BE IN THE RAKEFILE, UNCOMMENT THE BELOW
