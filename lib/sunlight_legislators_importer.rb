@@ -14,7 +14,8 @@ class SunlightLegislatorsImporter
     csv.each do |row|
       politician = Legislator.new
       row.each do |field, value|
-         politician.firstname = value
+
+         politician[field] = value
         # p field.class
 
         # p value.class

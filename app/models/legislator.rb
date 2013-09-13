@@ -4,10 +4,6 @@ require_relative '../main'
 class Legislator < ActiveRecord::Base
   #extend Shiznitt
 
-  def initialize
-      
-  end
-
   def self.by_state(state)
     # Given any state, first print out the senators 
     # for that state (sorted by last name), then print
