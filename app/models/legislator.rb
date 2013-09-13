@@ -8,11 +8,18 @@ class Legislator < ActiveRecord::Base
       
   end
 
-  def self.by_state
-    
+  def self.by_state(state)
+    # Given any state, first print out the senators 
+    # for that state (sorted by last name), then print
+    # out the representatives (also sorted by last name). 
+    # Include the party affiliation next to the name. 
+    # The output might look something like this:
+    #self.where(firstname: )
+
   end
 
 
 
 end
 
+p Legislator.all
