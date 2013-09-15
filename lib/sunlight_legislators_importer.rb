@@ -14,16 +14,7 @@ class SunlightLegislatorsImporter
     csv.each do |row|
       politician = Legislator.new
       row.each do |field, value|
-
-         politician[field] = value
-        # p field.class
-
-        # p value.class
-        # p "*"*100
-        #attribute_hash = Hash[field, value]
-
-        # raise NotImplementedError, "TODO: figure out what to do with this row and do it!"
-        # TODO: end
+        politician[field] = value
       end
       politician.save
     end
@@ -31,7 +22,6 @@ class SunlightLegislatorsImporter
 end
 
 # p %x[pwd]
-
 
 
 # IF YOU WANT TO HAVE THIS FILE RUN ON ITS OWN AND NOT BE IN THE RAKEFILE, UNCOMMENT THE BELOW
