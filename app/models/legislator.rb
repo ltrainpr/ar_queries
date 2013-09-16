@@ -2,8 +2,16 @@ require_relative '../../db/config'
 require_relative '../main'
 
 class Legislator < ActiveRecord::Base
-  extend Shiznitt
 
+  scope :active_legislators, -> {where('in_office = ?', '1')}
+  scope :active_representatives, -> {active_legislators.where('title = ?', 'Rep')}
+  scope :active_senators, -> {active_legislators.where('title = ?', 'Sen')}
+  scope :senator_count, -> {where('title = ?', 'Sen').count} 
+  scope :male_senator_count, -> {active_senators.where('gender = ?', 'M').count} 
+  scope :representative_count, -> {where('title = ?', 'Rep').count}
+  scope :male_representative_count, -> {active_representatives.where('gender = ?', 'M').count} 
+  scope :inactive_legislators, -> {where('in_office = ?', '0')}
+  scope :delete_inactive_legislators, -> {inactive_legislators.destroy_all}
 
   def self.by_state(state)
     senators_searched_state = self.where('state = ? AND title = ?', state.upcase, title = 'Sen' ).order('lastname')
@@ -16,36 +24,32 @@ class Legislator < ActiveRecord::Base
     rep_searched_state.map {|x| puts "#{x.firstname}, #{x.middlename}, #{x.lastname}, #{x.party}"}
   end
 
-scope :legislator_objects, -> {select(:state).distinct.group("")}
-
-
+  def self.male_politicians
+    puts "Male Senators: #{male_senator_count} (#{((male_senator_count.to_f/senator_count)*100).round}%)"
+    puts "Male Representatives: #{male_representative_count} (#{((male_representative_count.to_f/representative_count)*100).round}%)"
+  end  
 
   def self.politicians_per_state
-    p legislator_objects
-    # Print out the list of states along with how many active senators 
-    # and representatives are in each, in descending order (i.e., print out 
-    #   states with the most congresspeople first).
-    # CA: 2 Senators, 53 Representative(s)
-    # TX: 2 Senators, 32 Representative(s)
-    # NY: 2 Senators, 29 Representative(s)
-    # (... etc., etc., ...)
-    # WY: 2 Senators, 1 Representative(s)
-    #self.all.map do |x|
-    # states = []
-    # legislator_objects.each do |x|
-    #   states << x.state
-    # end
-
-    # states = states.compact
-    # states.each do |x|
-    #   puts "#{x}: #{Legislator.where('state = ? AND title = ?', x.upcase, title = 'Sen').count} Senators, #{Legislator.where('state = ? AND title = ?', x.upcase, title = 'Rep').count} Representative(s)"
-    # end
-    # p senator_count
-    # p rep_count
+    active_rep = active_representatives.group('state').order("count(*) DESC").count
+    # active_sen = active_senators.group('state').order("count(*) DESC").count
+    active_rep.each do |key, value|
+        puts "#{key}: 2 Senators, #{value} Representative(s)"
+    end
   end
+
+  def self.total_number_each
+    puts "Senators: #{senator_count}"
+    puts "Representatives: #{representative_count}" 
+  end
+
 end
 
 
-#Legislator.by_state('ma')
-Legislator.politicians_per_state
+# Legislator.by_state('ma')
+# Legislator.male_politicians
+# Legislator.politicians_per_state
+# Legislator.total_number_each
+# Legislator.delete_inactive_legislators
+# Legislator.total_number_each
+
 
